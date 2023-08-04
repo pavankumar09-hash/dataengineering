@@ -1,0 +1,107 @@
+1. BigQuery organizes data tables into units called datasets. These datasets are scoped to your 
+Google Cloud project.
+2. Refer the bigquery table as project.dataset.table
+3. Bigquery is categorized into projects, datasets and tables
+4. Aligh  projects for billing and datsets for access control
+5.  Access control is through IAM and is at the dataset table view or column level.
+6. Like Cloud storage, BigQuery datasets can be regional or multi-regional.
+7. As with Cloud storage, BigQuery storage encrypts data at REST and over the wire using Google managed
+encryption keys. It's also possible to use customer managed encryption keys.
+8. access control is at the level of datasets, tables, views or columns. When you provide access to a dataset,
+ either read or write,you provide access to all the tables in that dataset.
+9. An authorized view allows you to share data externally without sharing the underlying table
+10. You cannot export data from a view. 
+11. The data set in which view exists should belong to the same region as datasets view is created upon
+For example
+CREATE VIEW dsB.myview AsSELECT name, number from dsA.mytable WHERE year >1950
+dSA and dsB should be in the same region
+
+12. Views that are persisted so that table doesnot be queried everytime it is used. Big query will keep the 
+materialized view updated with the latest contents from table.
+
+13. Big query processing is divided into query service and storage service
+
+14. Big query query-service can run query jobs for csv files stored in cloud storage. This ability of Bigquery is 
+    called federated queries. In this Bigquery puts the results in a temporary table. Temporary table is stored
+	for 24 hours
+	
+15. For pricing use query validator with pricing calculator for estimates
+
+16. Cost of a query is always assigned to the active project from where the query is executed.
+17. Big query offers 1TB of data for free everymonth
+
+18. EL, ELT, ETL
+
+19. Loading uncompressed files is recommended in bigquery. 
+20. Load jobs re asyncrhonous.
+21. Bigquery data transfer service provides SAAS connectors
+22. Bigqery datatransfer service can be scheduled to load data into BigQuery
+23. Bigquery datatransfer service handles back filling data(late arriving data)
+24. UDF can be created if existing transformations donot support our usecase. Only javascript is supported langauage
+    to create UDF in bigquery
+25. For UDFS bigquery best practice suggests using standard sql.
+26. UDFS are stored as objects in bigquery. You can share UDFS publicly or to your team.
+27. Usually denormalizing data is done before loading to bigquery
+28. STRUCTS are record in bigquery table
+29. Arrays are repeaated in bigquery table
+30. Arrays can be part of regular fields or STRUCTS
+31. A single table can have many STRUCTS
+31. A STRUCT can have another STRUCT inside it(Nested STRUCT)
+32. ARRAYS are native type in Bigtype
+33. Keep a dimension table smaller than 10 gigabytes normalized, unless the table rarely goes through UPDATE and
+DETE operations
+34. Denormalize a dimension table larger than 10 GB, unless data manipulation or costs outweigh benefits of optimal
+  queries
+35. if you don't have partitioned columns, and you want the benefits of clustering, you can create
+    a fake underscore date column of type date
+
+Building a datalake
+====================
+1. Data lakes securely store various types of data of all scales for processing and analytics. 
+   Data lakes are typically used to drive data analytics
+2. Data lakes are portable on premise or in the Cloud.
+3. Cloud Storage implements two completely separate but overlapping methods of controlling access to objects,
+   IAM policy and access control lists.
+4. IAM is standard across the Google Cloud. It is set at the bucket level and applies uniform access rules to
+ all objects within a bucket.
+5. Access control lists can be applied at the bucket level or on individual objects, so it provides more 
+fine-grained access control.
+6. Create or changing access control lists is an IAM bucket role
+7. All data in google cloud is encrypted at rest and in transit.
+8. Google-managed encryption keys or GMEK has 2 levels of encryption. 
+   a. The data is encrypted using a data encyrption key
+   b. The data encryption key itself is encrypted using a key encryption key (KEK)
+   c. KEK is stored in KMS (Key management service).
+9. If customer would like to create and manage the key encyrption key it can be done using 
+customer managed encryption keys (CMEK) using KMS
+10. Customer can avoid cloud KMS completely and supply own encryption and rotation mechanism. This is called CSEK, or customer -supplied encryption keys
+
+OLTP and OLAP
+=================
+1. Transactional systems are 80% writes and 20% reads
+2. Rather than load the data directly into BigQuery, it can be much more convenient to first load it to 
+Cloud Storage and load from Cloud Storage to BigQuery. using -m option with gsutil.
+   This provides multithreaded, resumable loads
+3. Cloud SQL retains up to seven backups for each instance, which is included in the cost of your instance.
+4. You can vertically scale Cloud SQL, just increase your machine size. Scale up to 64 processor cores and 
+
+more than 100 gigabytes of RAM
+5. Horizontally, you can quickly scale out with read replicas. Google Cloud SQL supports three read 
+   replica scenarios Cloud SQL instances replicating from a Cloud SQL primary instance. 
+   Cloud SQL instances replicating from an external primary instance.
+
+Data transformations
+=======================
+1. in your organization for discovery and identification of suitability for uses. On Google Cloud, 
+Data Catalog provides discoverability, 
+   but you have to do your bit by adding labels. A label is a key value pair that helps you organize your
+   resources.
+   
+2.  A label is a key value pair that helps you organize your resources.
+
+	
+
+
+
+	
+

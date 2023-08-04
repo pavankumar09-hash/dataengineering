@@ -1,0 +1,94 @@
+Dataproc best practices
+1. While creating dataproc it is important to check the data locality as it will have 
+   major impact on performance
+2. Dataproc provides option to omit manual selection of zone. In this case Dataproc
+Autozone feature will choose the zone in the region
+3. Make sure the cloud storage location is in the same region as Dataproc cluster
+4. Check network rules or roots that funnel Cloud storage traffic through a small
+   number of VPN gateways before it reaches your cluster. This can cause a performance bottleneck
+5.  Make sure you are not dealing with more than around 10,000 input files. Remedy is to 
+    combine or union all files to create large datasets
+6.  If you working on larger datasets with more than 50,000 hadoop partitions
+    you should consider adjusting the setting fs.gs.block.size to a larger value 
+	accordingly.
+7.  Identify the work loads is key to identifying a dataproc cluster size.
+8.  Ephemeral nature of the Cloud makes it easy to write
+    size clusters for the specific task at hand instead of trying to purchase hardware 
+    upfront, thus, you can easily resize your cluster as needed.
+9. Employing job scoped clusters is a common strategy for Dataproc clusters
+ 
+Optimizing Dataproc storage
+===========================
+1. Local HDFS is a good option if
+  a. jobs require a lot of metadata operations
+  b. HDFS data is frequently modified or directories renamed.
+  c. Heavily use append operation on HDFS files
+  d. Workloads involve heavy io
+
+2. Cloud storage objects are immutable. So renaming a directory is an expensive operations
+ because it involves copying to new key and deleting old one.
+3. Using Dataproc with Cloud storage allows you to reduce the disk requirements and save costs
+   by putting your data there instead of in the HDFS.
+4. The primary persistent disk also contains the boot volume and system libraries.
+    So allocate at least 100 gigabytes.
+5. The primary persistent disk also contains the boot volume and system libraries. So allocate at least
+   100 gigabytes.
+6. Cloud Bigtable is an HBase compliant API that offers low latency and high scalability to adapt to your jobs.
+ For data warehousing, you can use BigQuery.
+   Because Dataproc runs Hadoop on Google Cloud,
+7. The most cost-effective and flexible way to migrate your Hadoop system to Google Cloud
+   is to shift away from thinking in terms of large,  multi-purpose persistent clusters,
+   and instead think about small, short-lived clusters that are designed to run specific
+   jobs. These shortlived clusters are called ephimeral clusters
+8.  You can minimize the cost of a persistent cluster by creating the smallest cluster
+    you can, scoping your work on that cluster to the smallest possible number of jobs,
+	and scaling the cluster to the minimum workable number of nodes.
+
+Optimizing dataproc templates and autoscaling
+==============================================
+1.  You can minimize the cost of a persistent cluster by creating the smallest cluster
+ you can, scoping your work on that cluster to the smallest possible number of jobs,
+ and scaling the cluster to the minimum workable number of nodes
+
+
+
+DataFlow
+=========
+1. Beam provides abstractions that unify traditional batch programming concepts and
+   traditional data processing concepts. Unifying programming and processing is a big 
+   innovation in data engineering. The four main concepts are P transforms, P collections,
+   pipelines and pipeline runners.
+2. Pipeline runners are analogous to container hosts such as Google Kubernetes Engine. 
+3. Elements in PCollection are immutable
+4. In a P collection, all data types are stored in a serialized state as byte strings. 
+   This way, there is no need to serialize data prior to network transfer
+   and deserialize it when it is received.
+5. Dataflow provides an efficient execution mechanism for Apache Beam.
+6. Dataflow watermarking handles late arrivals of data and comes with restarts,
+   monitoring and logging. There is no more waiting for other jobs to finish and no more
+   preemtive scheduling
+   storagedataflow_736808146124
+   
+   
+DataFusion
+===========
+1. Cloud Data Fusion uses Cloud Dataproc cluster to perform all transforms in the pipeline
+2.
+
+
+Cloud composer
+==============
+DAG
+A Directed Acyclic Graph is a collection of all the tasks you want to run, organized in a way that reflects
+their relationships and dependencies.
+
+Operator
+The description of a single task, it is usually atomic. For example, the BashOperator is used to execute bash 
+commands.
+
+Task
+A parameterised instance of an Operator; a node in the DAG.
+
+Task Instance
+A specific run of a task; characterized as: a DAG, a Task, and a point in time. It has an indicative state:
+running, success, failed, skipped, ..
